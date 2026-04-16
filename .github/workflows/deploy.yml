@@ -1,40 +1,29 @@
-# Имя нашего workflow
 name: Release Node.js app
 
-# Триггер: запускать при пуше в ветку main
 on:
   push:
     branches:
       - main
 
-# Задача (job), которая будет выполняться
 jobs:
   build:
-    # Запускаем на свежей Ubuntu
     runs-on: ubuntu-latest
     
-    # Шаги, из которых состоит задача
     steps:
-      # 1. Клонируем код репозитория (самая последняя версия)
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 2. Логинимся в Docker Hub, используя наши секреты
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_TOKEN }}
 
-      # 3. Собираем образ и пушим его в Docker Hub
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
-          # Контекст сборки - текущая директория
           context: .
-          # Загружать ли образ в Docker Hub
           push: true
-          # Теги для образа: всегда 'latest' и с коротким хэшем коммита
           tags: |
             m0ndr4ge/node-express-app:latest
             m0ndr4ge/node-express-app:${{ github.sha }}
