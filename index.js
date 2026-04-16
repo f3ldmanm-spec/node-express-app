@@ -3,7 +3,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Небольшой "секрет", который мы будем менять, чтобы видеть обновления
-const message = "Hello from Node.js App! Version 2.0"; 
+const message = "Hello from Node.js App! Version 3.0 - AUTOMATED!";
 
 app.get('/', (req, res) => {
   res.send(`
