@@ -1,20 +1,13 @@
-# Используем официальный образ Node.js версии 20
-FROM node:20-alpine
+# Редактируем Dockerfile
+cd C:\Users\f3ldm\node-express-app
 
-# Устанавливаем рабочую директорию внутри контейнера
-WORKDIR /usr/src/app
+# Меняем команду
+(Get-Content Dockerfile) -replace 'RUN npm ci --only=production', 'RUN npm install --only=production' | Set-Content Dockerfile
 
-# Копируем файлы с зависимостями
-COPY package*.json ./
+# Проверяем изменение
+cat Dockerfile
 
-# Устанавливаем зависимости
-RUN npm ci --only=production
-
-# Копируем весь код приложения
-COPY . .
-
-# Сообщаем Docker, какой порт будет слушать приложение
-EXPOSE 3000
-
-# Команда для запуска приложения
-CMD ["node", "index.js"]
+# Пушим изменения
+git add Dockerfile
+git commit -m "Replace npm ci with npm install"
+git push

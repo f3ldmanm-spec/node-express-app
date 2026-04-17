@@ -1,0 +1,18 @@
+﻿services:
+  app:
+    image: m0ndr4ge/node-express-app:latest
+    container_name: my-node-app
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+
+  watchtower:
+    image: containrrr/watchtower:latest
+    container_name: watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - WATCHTOWER_POLL_INTERVAL=60
+      - WATCHTOWER_CLEANUP=true
+      - WATCHTOWER_ROLLING_RESTART=true
+    restart: unless-stopped
