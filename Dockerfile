@@ -1,13 +1,20 @@
-# Редактируем Dockerfile
-cd C:\Users\f3ldm\node-express-app
+# 1. Берем базовый образ с Node.js
+FROM node:16
 
-# Меняем команду
-(Get-Content Dockerfile) -replace 'RUN npm ci --only=production', 'RUN npm install --only=production' | Set-Content Dockerfile
+# 2. Создаем рабочую директорию ВНУТРИ образа (не на вашем ПК!)
+WORKDIR /usr/src/app
 
-# Проверяем изменение
-cat Dockerfile
+# 3. Копируем файлы зависимостей
+COPY package*.json ./
 
-# Пушим изменения
-git add Dockerfile
-git commit -m "Replace npm ci with npm install"
-git push
+# 4. Устанавливаем зависимости
+RUN npm install
+
+# 5. Копируем оставшийся код приложения
+COPY . .
+
+# 6. Открываем порт (если ваше приложение использует 3000)
+EXPOSE 3000
+
+# 7. Команда для запуска приложения
+CMD [ "node", "index.js" ]
